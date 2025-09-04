@@ -4,16 +4,16 @@ const request = require("request");
 
 module.exports = {
   config: {
-    name: "random",
-    aliases: ["rndm"],
+    name: "emonvideo",
+    aliases: ["emon", "ভিডিও", "randomvideo"],
     permission: 0,
     prefix: true,
     categorie: "video",
-    credit: "Developed by Mohammad Nayan",
-    description: "Fetches a random video or a video based on a query.",
+    credit: "Developed & Styled by Emon",
+    description: "র‍্যান্ডম ভিডিও অথবা আপনার দেওয়া নাম অনুযায়ী ভিডিও পাঠাবে।",
     usages: [
-      `${global.config.PREFIX}random - Fetches a random video.`,
-      `${global.config.PREFIX}random <query> - Fetches a video based on the provided query.`,
+      `${global.config.PREFIX}emonvideo - র‍্যান্ডম ভিডিও পেতে।`,
+      `${global.config.PREFIX}emonvideo <নাম> - নির্দিষ্ট নাম অনুযায়ী ভিডিও পেতে।`,
     ],
   },
 
@@ -31,18 +31,14 @@ module.exports = {
       });
 
     try {
+      // এখানে তোমার api.json দেওয়া আছে (তুমি চাইলে নিজেরটা বসিয়ে দিও)
       const apiData = await getJSON("https://raw.githubusercontent.com/MOHAMMAD-NAYAN-07/Nayan/main/api.json");
       const apiBaseURL = apiData.api;
 
       const fetchAndSend = async (videoData, res) => {
         const { url: videoURL, name, cp } = videoData;
-          console.log(videoData)
-          let ln;
-          if (res){
-          ln = res.length
-          } else {
-          ln = videoData.length
-          }
+        let ln = res ? res.length : (videoData.length || 1);
+
         const fileName = `video_${Date.now()}.mp4`;
         const filePath = path.join(cacheDir, fileName);
 
@@ -55,38 +51,46 @@ module.exports = {
 
         await api.sendMessage(event.threadId, {
           video: { stream: fs.createReadStream(filePath) },
-          caption: `${cp}\n\n𝐓𝐨𝐭𝐚𝐥 𝐕𝐢𝐝𝐞𝐨𝐬: [${ln}]\n𝐀𝐝𝐝𝐞𝐝 𝐓𝐡𝐢𝐬 𝐕𝐢𝐝𝐞𝐨 𝐓𝐨 𝐓𝐡𝐞 𝐀𝐩𝐢 𝐁𝐲 [${name}]`,
+          caption: `🌸✨ *Emon ভিডিও সার্ভার* ✨🌸
+          
+🎬 টাইটেল: ${cp}
+📂 যুক্ত করেছেন: ${name}
+📊 মোট ভিডিও সংখ্যা: [${ln}]
+
+🔥 Enjoy Your Video!  
+– Developed by *Emon*`,
         });
 
         fs.unlinkSync(filePath);
       };
 
       if (!msg) {
+        // র‍্যান্ডম ভিডিও
         try {
           const res = await getJSON(`${apiBaseURL}/video/mixvideo`);
-            
           await fetchAndSend(res.url, res);
         } catch (randomError) {
           console.error("Error fetching random video:", randomError);
           await api.sendMessage(event.threadId, {
-            text: "❌ Failed to fetch a random video. Please try again later.",
+            text: "❌ দুঃখিত! র‍্যান্ডম ভিডিও আনা যায়নি। আবার চেষ্টা করুন।",
           });
         }
       } else {
+        // সার্চ ভিডিও
         try {
           const res = await getJSON(`${apiBaseURL}/random?name=${encodeURIComponent(msg)}`);
           await fetchAndSend(res.data);
         } catch (searchError) {
           console.error("Error fetching video based on query:", searchError);
           await api.sendMessage(event.threadId, {
-            text: "❌ Failed to fetch a video for your query. Please try again later.",
+            text: `❌ দুঃখিত! "${msg}" এর জন্য কোনো ভিডিও খুঁজে পাওয়া যায়নি।`,
           });
         }
       }
     } catch (mainError) {
       console.error("Error fetching API base URL or processing request:", mainError);
       await api.sendMessage(event.threadId, {
-        text: "❌ An unexpected error occurred. Please try again later.",
+        text: "❌ একটি অপ্রত্যাশিত সমস্যা হয়েছে। অনুগ্রহ করে পরে চেষ্টা করুন।",
       });
     }
   },
