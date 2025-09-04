@@ -1,15 +1,16 @@
 {
   "packname": "My Sticker Pack",
   "author": "My Bot",
-  "botName": "Nayan Bot",
-  "botOwner": "Mohammad Nayan",
-  "ownerNumber": "8801615298449",
+  "botName": "EMon-BHai-Bot",
+  "botOwner": "EMON HAWLADAR",
+  "ownerNumber": "8801309991724",
   "botNumber": "Your Bot Number",
   "autoUpdate": true,
   "botUid": "",
   "PREFIX": "/",
   "admin": [
-    "your main number",
+    "8801309991724",
+    "",
     "your grp id"
   ],
   "helpPic": "https://i.postimg.cc/pV7xByGv/IMG-20250106-WA0007.png",
