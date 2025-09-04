@@ -6,7 +6,7 @@ module.exports = {
     const groupName = groupInfo.subject;
     const totalMembers = groupInfo.participants.length;
 
-    // ২০+ stylish template
+    // 20+ stylish random templates
     const templates = [
       (username, total) => `
 ━━━━━━━━━━━━━━━━━━
@@ -14,7 +14,7 @@ module.exports = {
 ━━━━━━━━━━━━━━━━━━
 👤 Member: ${username}
 👥 Total Members: ${total}
-💫 "A new star has joined our galaxy 🌌" 
+💫 "A new star has joined our galaxy 🌌"
 Stay active, respect everyone & shine bright! 🌟`,
 
       (username, total) => `
@@ -31,7 +31,7 @@ Welcome to our lovely family 💕
 ✨ ${groupName} ✨
 🌺 ━━━━━━━━━━━━━━━━━━ 🌺
 👤 ${username}, স্বাগতম আমাদের গ্রুপে 🌸
-👥 আমরা এখন ${total} Members 
+👥 আমরা এখন ${total} Members
 💬 "হাসুন, খেলুন আর Enjoy করুন!"`,
 
       (username, total) => `
@@ -47,7 +47,7 @@ Welcome to our lovely family 💕
 ${username} এসে গেছে! 🥳
 🔥🔥🔥🔥🔥🔥🔥🔥🔥
 🚀 Welcome to ${groupName}
-👥 মোট সদস্য: ${total}  
+👥 মোট সদস্য: ${total}
 ⚡ আসুন মজা করি, family vibe উপভোগ করি 🎶`,
 
       (username, total) => `
@@ -117,8 +117,8 @@ ${username} এসে গেছে! 🥳
 
       (username, total) => `
 ⚡ ${username} 🚀
-Joined ${groupName} 
-👥 ${total} জন এখন এক পরিবার  
+Joined ${groupName}
+👥 ${total} জন এখন এক পরিবার
 🌟 "ভালোবাসাই সবার আগে 💖"`,
 
       (username, total) => `
@@ -159,7 +159,6 @@ Welcome to ${groupName}
       }
 
       const username = `@${member.split('@')[0]}`;
-      // Random template select
       const randomTemplate = templates[Math.floor(Math.random() * templates.length)];
       const welcomeMessage = randomTemplate(username, totalMembers);
 
