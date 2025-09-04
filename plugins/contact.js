@@ -7,7 +7,7 @@ module.exports = {
     categories: 'Utilities',
     credit: 'Developed by Mohammad Nayan',
     usages: [
-      `${global.config.PREFIX}contact - Send contact information for Mohammad Nayan.`,
+      `${global.config.PREFIX}contact - Send contact information for Emon Hawladar.`,
     ]
   },
 
@@ -18,14 +18,14 @@ module.exports = {
             + 'VERSION:3.0\n' 
             + 'FN:Mohammad Nayan\n'
             + 'ORG:Nayan;\n'
-            + 'TEL;type=CELL;type=VOICE;waid=8801615298449:01615298449\n'
+            + 'TEL;type=CELL;type=VOICE;waid=8801309991724:01309991724\n'
             + 'END:VCARD';
 
     const sentMsg = await api.sendMessage(
       threadId,
       { 
         contacts: { 
-          displayName: 'Mohammad Nayan', 
+          displayName: 'Emon Hawladar', 
           contacts: [{ vcard }] 
         }
       }
