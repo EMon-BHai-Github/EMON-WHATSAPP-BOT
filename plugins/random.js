@@ -4,8 +4,8 @@ const request = require("request");
 
 module.exports = {
   config: {
-    name: "emonvideo",
-    aliases: ["emon", "ভিডিও", "randomvideo"],
+    name: "random",
+    aliases: ["rndm", "mix", "randomvideo"],
     permission: 0,
     prefix: true,
     categorie: "video",
