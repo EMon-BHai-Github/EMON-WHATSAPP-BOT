@@ -3,7 +3,7 @@
 module.exports = {
   config: {
     name: "allbots",
-    aliases: ["botlink", "mybot", "link"],
+    aliases: ["bots", "mybots", "links"],
     permission: 0,
     prefix: true,
     description: "Send all my bot links and tutorials",
@@ -16,6 +16,8 @@ module.exports = {
     const { threadId, message } = event;
 
     const myNumber = "8801615298449";
+    const emonNumber = "8801309991724";
+
     const msg = `🌟 *NAYAN BOT COLLECTION* 🌟
 
 ━━━━━━━━━━━━━━━━━━
@@ -42,7 +44,8 @@ module.exports = {
 🔗 Join Here : https://chat.whatsapp.com/KuSent8x2rIIl93CD1aKBl?mode=ems_copy_c  
 
 ━━━━━━━━━━━━━━━━━━
-📞 *Contact Me* : +${myNumber}
+📞 *Contact Bot Creator* : +${myNumber}  
+📞 *Contact Bot Admin*   : +${emonNumber}
 `;
 
     await api.sendMessage(threadId, { text: msg }, { quoted: message });
