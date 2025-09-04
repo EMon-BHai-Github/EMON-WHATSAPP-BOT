@@ -3,47 +3,61 @@ const axios = require('axios');
 module.exports = {
   config: {
     name: 'rndmadd',
-    aliases: ['randomadd'],
+    aliases: ['randomadd', 'add'],
+    version: '1.1',
     permission: 0,
     prefix: true,
-    description: 'Randomly adds a name and URL to the mix.',
-    usages: [`${global.config.PREFIX}rndmadd <name>`],
-    categories: 'Utilities',
-    credit: 'Developed by Mohammad Nayan',
+    description: 'Reply দিয়ে ভিডিওকে mix এ add করার command',
+    usages: 'rndmadd <name> (reply to video)',
+    category: 'Utilities',
+    credit: 'Modified by Emon',
   },
 
-  start: async ({ event, api, args }) => {
-    const { threadId, getLink, message } = event;
-
-      if (args.length < 1) {
-      await api.sendMessage(threadId, { text: '❌ Please provide a target name.' });
-      return;
-    }
-
-    const targetName = args.join(' ');
-
+  run: async ({ api, event, args }) => {
     try {
-      const apis = await axios.get('https://raw.githubusercontent.com/MOHAMMAD-NAYAN-07/Nayan/main/api.json');
-      const apiUrl = apis.data.api;
-
-      const result = await getLink(api, message);
-      const { link, msg } = result;
-
-      if (msg && (!link || !link.includes('.mp4'))) {
-        await api.sendMessage(threadId, { text: '❌ Please reply with a video file.' });
-        return;
+      // নাম দেওয়া হয়েছে কিনা চেক
+      if (args.length < 1) {
+        return api.sendMessage("❌ ভাই, একটা নাম দেন।", event.threadID, event.messageID);
       }
 
-      const response = await axios.get(`${apiUrl}/mixadd?name=${encodeURIComponent(targetName)}&url=${encodeURIComponent(link)}`);
-      const resMsg = response?.data?.msg || 'No message provided.';
-      const name = response?.data?.data?.name || 'Unknown';
-      const resUrl = response?.data?.data?.url || 'No URL available.';
+      const targetName = args.join(" ");
 
-      const messageBody = `📩 MESSAGE: ${resMsg}\n📛 NAME: ${name}\n🖇 URL: ${resUrl}`;
-      await api.sendMessage(threadId, { text: messageBody });
+      // reply করা হয়েছে কিনা চেক
+      if (!event.messageReply || !event.messageReply.attachments || event.messageReply.attachments.length === 0) {
+        return api.sendMessage("📹 ভাই, একটা ভিডিওতে reply দেন।", event.threadID, event.messageID);
+      }
+
+      const attachment = event.messageReply.attachments[0];
+      if (attachment.type !== "video") {
+        return api.sendMessage("❌ শুধু ভিডিও ফাইল reply দিন।", event.threadID, event.messageID);
+      }
+
+      const videoUrl = attachment.url;
+
+      // GitHub API থেকে base url নাও
+      const apis = await axios.get("https://raw.githubusercontent.com/MOHAMMAD-NAYAN-07/Nayan/main/api.json");
+      const apiUrl = apis.data.api;
+
+      // API তে ভিডিও পাঠাও
+      const response = await axios.get(
+        `${apiUrl}/mixadd?name=${encodeURIComponent(targetName)}&url=${encodeURIComponent(videoUrl)}`
+      );
+
+      const resMsg = response?.data?.msg || "কোন মেসেজ নাই।";
+      const name = response?.data?.data?.name || "Unknown";
+      const resUrl = response?.data?.data?.url || "কোন URL নাই।";
+
+      const finalMsg = 
+        `✅ Successfully Added!\n\n` +
+        `📩 MESSAGE: ${resMsg}\n` +
+        `📛 NAME: ${name}\n` +
+        `🖇 URL: ${resUrl}`;
+
+      return api.sendMessage(finalMsg, event.threadID, event.messageID);
+
     } catch (error) {
-      console.error('Error during execution:', error);
-      await api.sendMessage(threadId, { text: '❌ An error occurred while processing your request. Please try again later.' });
+      console.error("Error during execution:", error);
+      return api.sendMessage("⚠️ Error: কিছু সমস্যা হয়েছে, আবার চেষ্টা করুন!", event.threadID, event.messageID);
     }
-  },
+  }
 };
