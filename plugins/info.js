@@ -65,7 +65,7 @@ module.exports = {
       await api.sendMessage(
         event.threadId,
         {
-          image: { url: "https://i.postimg.cc/2y9bTqv6/retouch-2025071913433217.jpg" },
+          image: { url: "https://i.postimg.cc/SNm9B2p1/IMG-20250902-WA0048.jpg" },
           caption: infoMessage
         },
         { quoted: event.message }
